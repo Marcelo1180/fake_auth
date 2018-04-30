@@ -1,11 +1,11 @@
 # Instalación
 
-´´´sh
+```sh
 npm install
-´´´
+```
 
 # Ejecución
 
-´´´sh
+```sh
 npm run start:dev 
-´´´
+```
