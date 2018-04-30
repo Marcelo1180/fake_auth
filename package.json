@@ -1,0 +1,18 @@
+{
+  "name": "agetic-bpm-auth",
+  "version": "1.0.0",
+  "description": "Fake Auth bpm",
+  "main": "index.js",
+  "scripts": {
+    "start:dev": "NODE_ENV=development DEBUG=bpm* nodemon index.js"
+  },
+  "author": "jarteaga@agetic.gob.bo",
+  "license": "MIT",
+  "dependencies": {
+    "axios": "^0.18.0",
+    "body-parser": "^1.18.2",
+    "debug": "^3.1.0",
+    "express": "^4.16.3",
+    "jsonwebtoken": "^8.2.1"
+  }
+}
