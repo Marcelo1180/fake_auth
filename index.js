@@ -19,13 +19,11 @@ const createToken = (item) => {
   return jwt.sign({ infoToken }, secret, { expiresIn: 18555 })
 }
 
-let GRUPOS = []
-let LABELS = []
-
 app.get('/status', (req, res) => res.json({active: true, env: process.env.NODE_ENV}))
 app.post('/signin', (req, res) => {
   let generarToken = false
   let item = {}
+  //Usuario con todos los privilegios posibles
   if (req.body.user == 'user0') {
     item = {
       entity: 'CODE/USER/0',
@@ -42,6 +40,7 @@ app.post('/signin', (req, res) => {
     }
     generarToken = true
   }
+  // Usuario de la empresa0 que solo puede acceder al flujo ...001
   if (req.body.user == 'user1') {
     item = {
       entity: 'CODE/EMPRESA/0',
@@ -52,6 +51,8 @@ app.post('/signin', (req, res) => {
     }
     generarToken = true
   }
+  // Usuario de la empresa0 que solo puede acceder al flujo ...002 y ...003
+  // ademas es del grupo tecnico pero esta con el ID de empresa
   if (req.body.user == 'user2') {
     item = {
       entity: 'CODE/EMPRESA/0',
@@ -65,6 +66,8 @@ app.post('/signin', (req, res) => {
     }
     generarToken = true
   }
+  // Usuario de la empresa0 que solo puede acceder al flujo ...002 y ...003
+  // ademas es del grupo tecnico pero esta con el ID de usuario 
   if (req.body.user == 'user2t') {
     item = {
       entity: 'CODE/USER2/AGETIC/tecnico',
@@ -78,6 +81,7 @@ app.post('/signin', (req, res) => {
     }
     generarToken = true
   }
+  // Usuario de la empresa0 que solo puede acceder al flujo ...004 y ...005
   if (req.body.user == 'user3') {
     item = {
       entity: 'CODE/EMPRESA/0',
@@ -89,6 +93,7 @@ app.post('/signin', (req, res) => {
     }
     generarToken = true
   }
+  // Usuario de la institucion AGETIC que accede como tecnico
   if (req.body.user == 'tecnico') {
     item = {
       entity: 'CODE/USER/AGETIC/tecnico',
@@ -99,6 +104,7 @@ app.post('/signin', (req, res) => {
     }
     generarToken = true
   }
+  // Usuario de la institucion AGETIC que accede como jefe
   if (req.body.user == 'jefe') {
     item = {
       entity: 'CODE/USER/AGETIC/jefe',
@@ -109,6 +115,7 @@ app.post('/signin', (req, res) => {
     }
     generarToken = true
   }
+  // Usuario de la institucion AGETIC que accede como director
   if (req.body.user == 'director') {
     item = {
       entity: 'CODE/USER/AGETIC/director',
@@ -119,6 +126,7 @@ app.post('/signin', (req, res) => {
     }
     generarToken = true
   }
+  // Usuario de la institucion AGETIC que accede como viceministro
   if (req.body.user == 'viceministro') {
     item = {
       entity: 'CODE/USER/AGETIC/viceministro',
@@ -129,23 +137,6 @@ app.post('/signin', (req, res) => {
     }
     generarToken = true
   }
-  // let idUser = Number(req.body.user.split('user')[1])
-  // if (idUser == 0) {
-  //   item = {
-  //     entity: `Y/abc/${idUser}/2018`,
-  //     grupos: GRUPOS,
-  //     labels: LABELS
-  //   }
-  //   generarToken = true
-  // }
-  // else if(idUser >= 1 && idUser <= GRUPOS.length) {
-  //   item = {
-  //     entity: `Y/abc/${idUser}/2018`,
-  //     grupos: GRUPOS[idUser-1],
-  //     labels: LABELS[idUser-1]
-  //   }
-  //   generarToken = true
-  // }
   if (generarToken) {
     const token = createToken(item)
     res.status(200).json({
@@ -160,34 +151,6 @@ app.post('/signin', (req, res) => {
       message: 'Usuario no autorizado',
     })
   }
-})
-// async function allGrupos (req, res, next) {
-//   GRUPOS = []
-//   LABELS = []
-//   try {
-//     const response = await axios.get('http://localhost:3000/external/auth/api/v1/grupos')
-//     const items = response.data.datos.listado
-//     items.forEach(function(item) {
-//       GRUPOS.push(item._id)
-//       LABELS.push(`${item.titulo} - ${item.institucion.nombre}`)
-//       // GRUPOS.push({
-//       //   grupo: item._id
-//       // })
-//       // console.log(item._id);
-//       // console.log(item.titulo);
-//       // console.log(item.institucion._id);
-//       // console.log(item.institucion.nombre);
-//     })
-//     next()
-//   } catch (error) {
-//     return console.error(error);
-//   }
-// }
-app.get('/sync/bpm/grupos', allGrupos, async (req, res) => {
-  res.status(200).json({
-    finalizado: true,
-    message: 'Operacion satisfactoria',
-  })
 })
 
 const PORT = process.env.PORT || 3001;
